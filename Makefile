@@ -1,6 +1,6 @@
 clean:
 	cargo clean
-	rm -fr build
+	rm -fr out
 
 lint:
 	cargo fmt --all -- --check
@@ -48,9 +48,6 @@ out/main.wasm:
 	@cp target/wasm32-unknown-unknown/release/intro.wasm out/main.wasm
 	@du -b out/main.wasm
 	@sha256sum out/main.wasm
-
-deploy-force: out/main.wasm
-	near dev-deploy --init --force --wasmFile out/main.wasm
 
 build:\
 out/main.wasm
