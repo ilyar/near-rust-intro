@@ -15,11 +15,15 @@ audit-fix:
 audit:
 	cargo audit
 
-test-contract: out/main.wasm
-	cargo test --all
+test-contract-integration: out/main.wasm
+	cargo test --test integration
 
 test-contract-unit:
 	cargo test --lib
+
+test-contract:\
+test-contract-integration \
+test-contract-unit
 
 test:\
 test-contract

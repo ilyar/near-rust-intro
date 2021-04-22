@@ -26,3 +26,15 @@ pub fn init() -> (UserAccount, UserAccount, UserAccount) {
 
     (root, contract, alice)
 }
+
+pub fn to_gas(tera_gas: &str) -> u64 {
+    let part: Vec<_> = tera_gas.split('.').collect();
+    let number = part[0].parse::<u64>().unwrap() * u64::pow(10, 12);
+    if part.len() > 1 {
+        let power = part[1].len() as u32;
+        let mantissa = part[1].parse::<u64>().unwrap() * u64::pow(10, 12 - power);
+        number + mantissa
+    } else {
+        number
+    }
+}

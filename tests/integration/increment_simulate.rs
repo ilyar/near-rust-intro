@@ -1,4 +1,5 @@
 use crate::utils::init;
+use crate::utils::to_gas;
 use near_sdk_sim::DEFAULT_GAS;
 
 #[test]
@@ -19,8 +20,7 @@ fn default() {
         (result.gas_burnt()) as f64 / 1e12,
     );
 
-    let expected = 27 * u64::pow(10, 13); // 2.7 TeraGas
-    assert!(result.gas_burnt() <= expected);
+    assert!(result.gas_burnt() <= to_gas("2.7"));
 
     let actual: i8 = root
         .view(contract.account_id(), "get_num", &[].to_vec())
