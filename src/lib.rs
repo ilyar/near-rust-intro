@@ -13,9 +13,6 @@ use near_sdk::borsh::BorshDeserialize;
 use near_sdk::borsh::BorshSerialize;
 use near_sdk::env;
 use near_sdk::near_bindgen;
-use near_sdk::setup_alloc;
-
-setup_alloc!();
 
 /// Add the following attributes
 /// to prepare your code for serialization and invocation on the blockchain
@@ -58,7 +55,7 @@ impl Counter {
         // real smart contracts will want to have safety checks
         self.val += 1;
         let log_message = format!("Increased number to {}", self.val);
-        env::log(log_message.as_bytes());
+        env::log_str(&log_message);
         after_counter_change();
     }
 
@@ -75,7 +72,7 @@ impl Counter {
         // real smart contracts will want to have safety checks
         self.val -= 1;
         let log_message = format!("Decreased number to {}", self.val);
-        env::log(log_message.as_bytes());
+        env::log_str(&log_message);
         after_counter_change();
     }
 
@@ -83,7 +80,7 @@ impl Counter {
     pub fn reset(&mut self) {
         self.val = 0;
         // Another way to log is to cast a string into bytes, hence "b" below:
-        env::log(b"Reset counter to zero");
+        env::log_str("Reset counter to zero");
     }
 }
 
@@ -93,7 +90,7 @@ impl Counter {
 /// while this function cannot be invoked directly on the blockchain, it can be called from an invoked function
 fn after_counter_change() {
     // show helpful warning that i8 (8-bit signed integer) will overflow above 127 or below -128
-    env::log("Make sure you don't overflow, my friend.".as_bytes());
+    env::log_str("Make sure you don't overflow, my friend.");
 }
 
 /*
@@ -110,7 +107,6 @@ mod tests {
     use near_sdk::test_utils::accounts;
     use near_sdk::test_utils::VMContextBuilder;
     use near_sdk::testing_env;
-    use near_sdk::MockedBlockchain;
 
     // part of writing unit tests is setting up a mock context
     fn context() -> VMContextBuilder {

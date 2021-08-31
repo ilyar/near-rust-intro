@@ -13,10 +13,10 @@ bench = false
 doc = false
 
 [dev-dependencies]
-near-sdk-sim = "3.1.0"
+near-sdk-sim = "4.0.0-pre.1"
 
 [dependencies]
-near-sdk = "3.1.0"
+near-sdk = "4.0.0-pre.2"
 
 [profile.release]
 codegen-units = 1

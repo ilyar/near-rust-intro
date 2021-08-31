@@ -17,7 +17,7 @@ fn default() {
     println!(
         "burnt tokens: {:.04}Ⓝ gas: {:.01} TeraGas",
         (result.tokens_burnt()) as f64 / 1e24,
-        (result.gas_burnt()) as f64 / 1e12,
+        (result.gas_burnt().0) as f64 / 1e12,
     );
 
     assert!(result.gas_burnt() <= to_gas("2.7"));

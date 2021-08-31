@@ -2,6 +2,7 @@ near_sdk_sim::lazy_static_include::lazy_static_include_bytes! {
     CONTRACT_WASM_BYTES => "out/main.wasm",
 }
 
+use near_sdk::Gas;
 use near_sdk_sim::init_simulator;
 use near_sdk_sim::to_yocto;
 use near_sdk_sim::UserAccount;
@@ -15,26 +16,26 @@ pub fn init() -> (UserAccount, UserAccount, UserAccount) {
 
     let contract = root.deploy(
         &CONTRACT_WASM_BYTES,
-        CONTRACT_ID.to_string(),
+        CONTRACT_ID.parse().unwrap(),
         STORAGE_AMOUNT, // attached deposit
     );
 
     let alice = root.create_user(
-        "alice".to_string(),
+        "alice".parse().unwrap(),
         to_yocto("100"), // initial balance
     );
 
     (root, contract, alice)
 }
 
-pub fn to_gas(tera_gas: &str) -> u64 {
+pub fn to_gas(tera_gas: &str) -> Gas {
     let part: Vec<_> = tera_gas.split('.').collect();
     let number = part[0].parse::<u64>().unwrap() * u64::pow(10, 12);
-    if part.len() > 1 {
+    Gas::from(if part.len() > 1 {
         let power = part[1].len() as u32;
         let mantissa = part[1].parse::<u64>().unwrap() * u64::pow(10, 12 - power);
         number + mantissa
     } else {
         number
-    }
+    })
 }
